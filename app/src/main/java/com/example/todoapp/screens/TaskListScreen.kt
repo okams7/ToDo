@@ -33,14 +33,14 @@ import com.example.todoapp.ui.theme.ToDoAppTheme
 @Composable
 fun TaskListScreen(modifier: Modifier) {
 
+    var task by remember { mutableStateOf("") }
+    val tasks = remember { mutableStateListOf<String>() }
+
     Column(
         modifier = modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        var task by remember { mutableStateOf("") }
-        val tasks = remember { mutableStateListOf<String>() }
-
         OutlinedTextField(
             value = task,
             onValueChange = { task = it },

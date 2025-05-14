@@ -16,25 +16,26 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.todoapp.R
 import com.example.todoapp.ui.theme.ToDoAppTheme
+import com.example.todoapp.viewmodels.TasksViewModel
 
 @Composable
-fun TaskListScreen(modifier: Modifier) {
+fun TaskListScreen(modifier: Modifier, vm: TasksViewModel = viewModel()) {
 
-    var task by remember { mutableStateOf("") }
-    val tasks = remember { mutableStateListOf<String>() }
+    // جمع حالة قائمة المهام من ViewModel
+    val tasks by vm.tasks.collectAsState()
+    // جمع حالة نص المهمة الجديدة من ViewModel
+    val newTaskText by vm.newTaskText.collectAsState()
 
     Column(
         modifier = modifier
@@ -42,8 +43,8 @@ fun TaskListScreen(modifier: Modifier) {
             .padding(16.dp)
     ) {
         OutlinedTextField(
-            value = task,
-            onValueChange = { task = it },
+            value = newTaskText,
+            onValueChange = { vm.updateNewTaskText(it) },
             label = { Text("Task") },
             shape = MaterialTheme.shapes.large,
             modifier = Modifier.fillMaxWidth()
@@ -62,7 +63,7 @@ fun TaskListScreen(modifier: Modifier) {
                 color = MaterialTheme.colorScheme.primary
             )
             Button(
-                onClick = { tasks.add(task) },
+                onClick = { vm.addTask() },
             ) {
                 Text("Add Task")
             }

@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -24,13 +24,19 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.todoapp.R
+import com.example.todoapp.components.TaskCard
+import com.example.todoapp.data.Routes
 import com.example.todoapp.ui.theme.ToDoAppTheme
 import com.example.todoapp.viewmodels.TasksViewModel
 
 @Composable
-fun TaskListScreen(modifier: Modifier, vm: TasksViewModel = viewModel()) {
+fun TaskListScreen(
+    modifier: Modifier,
+    vm: TasksViewModel,
+    navController: NavController
+) {
 
     // جمع حالة قائمة المهام من ViewModel
     val tasks by vm.tasks.collectAsState()
@@ -63,7 +69,11 @@ fun TaskListScreen(modifier: Modifier, vm: TasksViewModel = viewModel()) {
                 color = MaterialTheme.colorScheme.primary
             )
             Button(
-                onClick = { vm.addTask() },
+                onClick = {
+                    vm.addTask()
+                    val timestamp = System.currentTimeMillis()
+                    println("Timestamp in millis: $timestamp")
+                },
             ) {
                 Text("Add Task")
             }
@@ -81,8 +91,17 @@ fun TaskListScreen(modifier: Modifier, vm: TasksViewModel = viewModel()) {
             )
         } else {
             LazyColumn {
-                items(tasks.size) { index ->
-                    Text(text = tasks[index])
+                items(tasks) { task ->
+//                    Text(
+//                        text = task.title,
+//                        modifier = Modifier
+//                            .padding(vertical = 8.dp)
+//                            .clickable { navController.navigate("task") }
+//                    )
+                    TaskCard(
+                        task,
+                        onClick = { navController.navigate(Routes.TaskDetails.name + "/" + task.id) }
+                    )
                 }
             }
         }
@@ -95,6 +114,6 @@ fun TaskListScreen(modifier: Modifier, vm: TasksViewModel = viewModel()) {
 @Composable
 fun PreviewTaskListScreen() {
     ToDoAppTheme {
-        TaskListScreen(modifier = Modifier)
+//        TaskListScreen(modifier = Modifier,)
     }
 }

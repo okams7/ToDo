@@ -26,6 +26,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.todoapp.R
+import com.example.todoapp.components.TaskCard
 import com.example.todoapp.data.Routes
 import com.example.todoapp.viewmodels.TasksViewModel
 
@@ -82,12 +83,17 @@ fun TaskListScreen(modifier: Modifier, vm: TasksViewModel, navController: NavCon
         } else {
             LazyColumn {
                 items(tasks) { task ->
-                    Text(
-                        text = task.title,
-                        Modifier.clickable {
+                    TaskCard(
+                        task,
+                        onClick = {
                             navController.navigate(Routes.TaskDetail.name + "/" + task.id)
-                        }
-                    )
+                        })
+//                    Text(
+//                        text = task.title,
+//                        Modifier.clickable {
+//                            navController.navigate(Routes.TaskDetail.name + "/" + task.id)
+//                        }
+//                    )
                 }
             }
         }

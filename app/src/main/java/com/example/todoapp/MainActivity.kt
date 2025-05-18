@@ -27,12 +27,13 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
+import com.example.todoapp.components.ToDoTopBar
 import com.example.todoapp.navigations.NavigationHost
 import com.example.todoapp.ui.theme.ToDoAppTheme
 import com.example.todoapp.viewmodels.TasksViewModel
+import com.example.todoapp.viewmodels.ThemeViewModel
 
 class MainActivity : ComponentActivity() {
-    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -40,42 +41,14 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
             val tasksViewModel: TasksViewModel = viewModel()
+            val themeViewModel: ThemeViewModel = viewModel()
 
-            var isDarkTheme by remember { mutableStateOf(false) }
-            ToDoAppTheme(isDarkTheme) {
+//            var isDarkTheme by remember { mutableStateOf(false) }
+
+            ToDoAppTheme(themeViewModel.isDarkTheme.value) {
                 Scaffold(
                     topBar = {
-                        TopAppBar(
-                            title = { Text("ToDo App") },
-                            colors = TopAppBarDefaults.topAppBarColors(
-                                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                                titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
-                            ),
-                            actions = {
-                                Switch(
-                                    modifier = Modifier.semantics { contentDescription = "Demo with icon" },
-                                    checked = isDarkTheme,
-                                    onCheckedChange = { isDarkTheme = !isDarkTheme },
-                                    thumbContent = {
-                                        if (isDarkTheme) {
-                                            Icon(
-                                                imageVector = ImageVector.vectorResource(R.drawable.dark_mode),
-                                                contentDescription = null,
-                                                modifier = Modifier.size(SwitchDefaults.IconSize),
-                                            )
-                                        }
-                                        else{
-                                            Icon(
-                                                imageVector = ImageVector.vectorResource(R.drawable.light_mode),
-                                                contentDescription = null,
-                                                modifier = Modifier.size(SwitchDefaults.IconSize),
-                                            )
-                                        }
-                                    }
-                                )
-                            }
-                        )
-
+                        ToDoTopBar(themeViewModel,navController)
                     },
                     modifier = Modifier.fillMaxSize()
                 ) { innerPadding ->

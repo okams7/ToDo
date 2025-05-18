@@ -1,6 +1,7 @@
 package com.example.todoapp.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,15 +23,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.todoapp.R
-import com.example.todoapp.ui.theme.ToDoAppTheme
+import com.example.todoapp.data.Routes
 import com.example.todoapp.viewmodels.TasksViewModel
 
 @Composable
-fun TaskListScreen(modifier: Modifier, vm: TasksViewModel = viewModel()) {
+fun TaskListScreen(modifier: Modifier, vm: TasksViewModel, navController: NavController) {
 
     // جمع حالة قائمة المهام من ViewModel
     val tasks by vm.tasks.collectAsState()
@@ -82,7 +82,9 @@ fun TaskListScreen(modifier: Modifier, vm: TasksViewModel = viewModel()) {
         } else {
             LazyColumn {
                 items(tasks.size) { index ->
-                    Text(text = tasks[index])
+                    Text(text = tasks[index], Modifier.clickable {
+                        navController.navigate(Routes.TaskDetail.name)
+                    })
                 }
             }
         }
@@ -91,10 +93,10 @@ fun TaskListScreen(modifier: Modifier, vm: TasksViewModel = viewModel()) {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewTaskListScreen() {
-    ToDoAppTheme {
-        TaskListScreen(modifier = Modifier)
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewTaskListScreen() {
+//    ToDoAppTheme {
+//        TaskListScreen(modifier = Modifier)
+//    }
+//}

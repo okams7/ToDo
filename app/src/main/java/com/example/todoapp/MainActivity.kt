@@ -25,8 +25,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import com.example.todoapp.screens.TaskListScreen
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.rememberNavController
+import com.example.todoapp.navigations.NavigationHost
 import com.example.todoapp.ui.theme.ToDoAppTheme
+import com.example.todoapp.viewmodels.TasksViewModel
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
@@ -35,6 +38,9 @@ class MainActivity : ComponentActivity() {
 
         enableEdgeToEdge()
         setContent {
+            val navController = rememberNavController()
+            val tasksViewModel: TasksViewModel = viewModel()
+
             var isDarkTheme by remember { mutableStateOf(false) }
             ToDoAppTheme(isDarkTheme) {
                 Scaffold(
@@ -73,7 +79,8 @@ class MainActivity : ComponentActivity() {
                     },
                     modifier = Modifier.fillMaxSize()
                 ) { innerPadding ->
-                    TaskListScreen(modifier = Modifier.padding(innerPadding))
+//                    TaskListScreen(modifier = Modifier.padding(innerPadding))
+                    NavigationHost(navController, modifier = Modifier.padding(innerPadding), tasksViewModel)
                 }
             }
         }

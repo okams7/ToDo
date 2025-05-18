@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -81,10 +81,13 @@ fun TaskListScreen(modifier: Modifier, vm: TasksViewModel, navController: NavCon
             )
         } else {
             LazyColumn {
-                items(tasks.size) { index ->
-                    Text(text = tasks[index], Modifier.clickable {
-                        navController.navigate(Routes.TaskDetail.name)
-                    })
+                items(tasks) { task ->
+                    Text(
+                        text = task.title,
+                        Modifier.clickable {
+                            navController.navigate(Routes.TaskDetail.name + "/" + task.id)
+                        }
+                    )
                 }
             }
         }

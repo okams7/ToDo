@@ -35,17 +35,26 @@ class TasksViewModel: ViewModel() {
         _newTaskText.value = newText
     }
 
-    fun addTask() {
+    fun initTask(): Task? {
         val currentText = _newTaskText.value
         if (currentText.isNotBlank()) {
             val newTask = Task(title = currentText)
             tasks = tasks + newTask
             _newTaskText.value = "" // مسح حقل الإدخال
+            return newTask
         }
+        return null
     }
 
-    fun getItemById(id: Long): Task? {
-        return tasks.find { it.id == id }
+    //Todo: get item from server
+    fun getItemById(id: Int): Task? {
+        //search first in the list
+        val task = tasks.find { it.id == id }
+        if (task!=null) {
+            return task
+        }
+        //if not found search in the server
+        return null
     }
 
     fun fetchTasks() {
@@ -64,12 +73,17 @@ class TasksViewModel: ViewModel() {
 
     fun addTask(task: Task, onSuccess: () -> Unit, onError: (String) -> Unit) {
         viewModelScope.launch {
+            isLoading = true
+            errorMessage = null
             try {
                 val newTask = RetroFitClient.apiService.addTask(task)
                 tasks = tasks + newTask
                 onSuccess()
             } catch (e: Exception) {
                 onError(e.message ?: "خطأ غير معروف")
+            }
+            finally {
+                isLoading = false
             }
         }
     }

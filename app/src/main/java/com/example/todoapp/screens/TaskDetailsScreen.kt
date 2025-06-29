@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import com.example.todoapp.viewmodels.TasksViewModel
 
 @Composable
-fun TaskDetailsScreen(vm: TasksViewModel, taskId: Long) {
+fun TaskDetailsScreen(vm: TasksViewModel, taskId: Int) {
     val task = vm.getItemById(taskId)
     if (task != null) {
         Column(

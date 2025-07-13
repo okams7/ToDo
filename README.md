@@ -1,2 +1,8 @@
-[❌] testing
-[✅] task 2
+﷽
+<br>
+test
+<br>
+---
+[❌] Cancelled <br>
+[✅] Done <br>
+[🟢] In Progress <br>

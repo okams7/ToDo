@@ -1,10 +1,10 @@
 ﷽
 <br><br>
 # On The List
-[⏳] Change the design of adding a new task, so you can add description if not,
+⏳ Change the design of adding a new task, so you can add description if not,
 and to add a due date if not <br>
-[⏳] Change list items to reflect the task status <br>
-[⏳] Connect supabase instead of aws <br>
+⏳ Change list items to reflect the task status <br>
+⏳ Connect supabase instead of aws <br>
 [⏳] Change item details screen design <br>
 <br>
 ---
